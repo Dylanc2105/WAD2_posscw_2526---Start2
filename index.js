@@ -67,18 +67,19 @@
 
 // index.js
 import express from "express";
+import session from "express-session";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import mustacheExpress from "mustache-express";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// import authRoutes from './routes/auth.js';
+import authRoutes from "./routes/auth.js";
 import courseRoutes from "./routes/courses.js";
 import sessionRoutes from "./routes/sessions.js";
 import bookingRoutes from "./routes/bookings.js";
 import viewRoutes from "./routes/views.js";
-import { attachDemoUser } from "./middlewares/demoUser.js";
+import { attachUser } from "./middlewares/demoUser.js";
 import { initDb } from "./models/_db.js";
 
 dotenv.config();
@@ -100,12 +101,13 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(session({ secret: 'yoga-secret-key', resave: false, saveUninitialized: false }));
 
 // Static
 app.use("/static", express.static(path.join(__dirname, "public")));
 
-// Demo user
-app.use(attachDemoUser);
+// Attach user from session
+app.use(attachUser);
 
 // Health
 app.get("/health", (req, res) => res.json({ ok: true }));
@@ -115,6 +117,9 @@ app.get("/health", (req, res) => res.json({ ok: true }));
 app.use("/api/courses", courseRoutes);
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/bookings", bookingRoutes);
+
+// Auth routes
+app.use("/", authRoutes);
 
 // SSR view routes
 app.use("/", viewRoutes);

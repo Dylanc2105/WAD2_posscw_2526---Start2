@@ -1,16 +1,24 @@
-// middlewares/demoUser.js
-import { UserModel } from "../models/userModel.js";
+// middlewares/attachUser.js
+import { UserModel } from '../models/userModel.js';
 
-export const attachDemoUser = async (req, res, next) => {
+export const attachUser = async (req, res, next) => {
   try {
-    // In production you’d use real auth; here we ensure one demo student exists.
-    const email = "fiona@student.local";
-    let user = await UserModel.findByEmail(email);
-    if (!user) {
-      user = await UserModel.create({ name: "Fiona", email, role: "student" });
+    if (req.session && req.session.userId) {
+      const user = await UserModel.findById(req.session.userId);
+      if (user) {
+        req.user = user;
+        res.locals.user = {
+          ...user,
+          isOrganiser: user.role === 'organiser'
+        };
+      } else {
+        req.user = null;
+        res.locals.user = null;
+      }
+    } else {
+      req.user = null;
+      res.locals.user = null;
     }
-    req.user = user;
-    res.locals.user = user; // exposed to Mustache
     next();
   } catch (err) {
     next(err);

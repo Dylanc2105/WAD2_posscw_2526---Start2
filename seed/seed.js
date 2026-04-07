@@ -1,4 +1,5 @@
 // seed/seed.js
+import bcrypt from 'bcrypt';
 import {
   initDb,
   usersDb,
@@ -13,32 +14,37 @@ import { UserModel } from "../models/userModel.js";
 const iso = (d) => new Date(d).toISOString();
 
 async function wipeAll() {
-  // Remove all documents to guarantee a clean seed
   await Promise.all([
     usersDb.remove({}, { multi: true }),
     coursesDb.remove({}, { multi: true }),
     sessionsDb.remove({}, { multi: true }),
     bookingsDb.remove({}, { multi: true }),
   ]);
-  // Compact files so you’re not looking at stale data on disk
   await Promise.all([
-    usersDb.persistence.compactDatafile(),
-    coursesDb.persistence.compactDatafile(),
-    sessionsDb.persistence.compactDatafile(),
-    bookingsDb.persistence.compactDatafile(),
+    usersDb.compactDatafile(),
+    coursesDb.compactDatafile(),
+    sessionsDb.compactDatafile(),
+    bookingsDb.compactDatafile(),
   ]);
 }
 
-async function ensureDemoStudent() {
-  let student = await UserModel.findByEmail("fiona@student.local");
-  if (!student) {
-    student = await UserModel.create({
-      name: "Fiona",
-      email: "fiona@student.local",
-      role: "student",
-    });
-  }
-  return student;
+async function ensureDemoUsers() {
+  const studentPassword = await bcrypt.hash('student123', 10);
+  const organiserPassword = await bcrypt.hash('organiser123', 10);
+
+  await UserModel.create({
+    name: 'Dylan',
+    email: 'student@yoga.local',
+    role: 'student',
+    password: studentPassword
+  });
+
+  await UserModel.create({
+    name: 'Admin',
+    email: 'organiser@yoga.local',
+    role: 'organiser',
+    password: organiserPassword
+  });
 }
 
 async function createWeekendWorkshop() {
@@ -59,10 +65,10 @@ async function createWeekendWorkshop() {
     description: "Two days of breath, posture alignment, and meditation.",
   });
 
-  const base = new Date("2026-01-10T09:00:00"); // Sat 9am
+  const base = new Date("2026-01-10T09:00:00");
   const sessions = [];
   for (let i = 0; i < 5; i++) {
-    const start = new Date(base.getTime() + i * 2 * 60 * 60 * 1000); // every 2 hours
+    const start = new Date(base.getTime() + i * 2 * 60 * 60 * 1000);
     const end = new Date(start.getTime() + 60 * 60 * 1000);
     const s = await SessionModel.create({
       courseId: course._id,
@@ -86,7 +92,7 @@ async function createWeeklyBlock() {
     role: "instructor",
   });
   const course = await CourseModel.create({
-    title: "12‑Week Vinyasa Flow",
+    title: "12-Week Vinyasa Flow",
     level: "intermediate",
     type: "WEEKLY_BLOCK",
     allowDropIn: true,
@@ -97,7 +103,7 @@ async function createWeeklyBlock() {
     description: "Progressive sequences building strength and flexibility.",
   });
 
-  const first = new Date("2026-02-02T18:30:00"); // Monday 6:30pm
+  const first = new Date("2026-02-02T18:30:00");
   const sessions = [];
   for (let i = 0; i < 12; i++) {
     const start = new Date(first.getTime() + i * 7 * 24 * 60 * 60 * 1000);
@@ -141,8 +147,8 @@ async function run() {
   console.log("Wiping existing data…");
   await wipeAll();
 
-  console.log("Creating demo student…");
-  const student = await ensureDemoStudent();
+  console.log("Creating demo users…");
+  await ensureDemoUsers();
 
   console.log("Creating weekend workshop…");
   const w = await createWeekendWorkshop();
@@ -153,19 +159,8 @@ async function run() {
   await verifyAndReport();
 
   console.log("\n✅ Seed complete.");
-  console.log("Student ID           :", student._id);
-  console.log(
-    "Workshop course ID   :",
-    w.course._id,
-    "(sessions:",
-    w.sessions.length + ")"
-  );
-  console.log(
-    "Weekly block course ID:",
-    b.course._id,
-    "(sessions:",
-    b.sessions.length + ")"
-  );
+  console.log("Workshop course ID   :", w.course._id, "(sessions:", w.sessions.length + ")");
+  console.log("Weekly block course ID:", b.course._id, "(sessions:", b.sessions.length + ")");
 }
 
 run().catch((err) => {
