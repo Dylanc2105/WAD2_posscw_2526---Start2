@@ -112,9 +112,9 @@ app.get("/health", (req, res) => res.json({ ok: true }));
 
 // JSON API routes
 // app.use('/auth', authRoutes);
-app.use("/courses", courseRoutes);
-app.use("/sessions", sessionRoutes);
-app.use("/bookings", bookingRoutes);
+app.use("/api/courses", courseRoutes);
+app.use("/api/sessions", sessionRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 // SSR view routes
 app.use("/", viewRoutes);
