@@ -4,6 +4,7 @@
   <h1>Courses</h1>
 
   <form class="filter-bar" method="GET" action="/courses">
+    <span>Filter:</span>
     <div class="filter-group">
       <label for="level-filter">Level</label>
       <select id="level-filter" name="level" onchange="this.form.submit()">
@@ -22,7 +23,7 @@
       </select>
     </div>
     {{#filters.hasActive}}
-    <a class="filter-clear" href="/courses">Clear filters</a>
+    <a class="filter-clear" href="/courses">✕ Clear</a>
     {{/filters.hasActive}}
   </form>
 
