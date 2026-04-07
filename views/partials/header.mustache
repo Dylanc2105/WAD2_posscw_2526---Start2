@@ -5,6 +5,9 @@
       <a href="/">Home</a>
       <a href="/courses">Courses</a>
       {{#user}}
+        {{#isOrganiser}}
+          <a href="/organiser">Admin</a>
+        {{/isOrganiser}}
         <a href="/logout">Logout</a>
       {{/user}}
       {{^user}}
