@@ -11,6 +11,7 @@
           <th>Type</th>
           <th>Status</th>
           <th>Booked At</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -20,6 +21,13 @@
           <td>{{type}}</td>
           <td>{{status}}</td>
           <td>{{createdAt}}</td>
+          <td>
+            {{^isCancelled}}
+            <form method="POST" action="/organiser/bookings/{{_id}}/cancel">
+              <button type="submit">Cancel</button>
+            </form>
+            {{/isCancelled}}
+          </td>
         </tr>
         {{/bookings}}
         {{^bookings}}

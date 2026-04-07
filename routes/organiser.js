@@ -8,6 +8,7 @@ import {
   postEditCourse,
   deleteCourse,
   classListPage,
+  cancelBooking,
   usersPage,
   deleteUser,
   addOrganiserPage,
@@ -25,6 +26,7 @@ router.get('/courses/:id/edit', editCoursePage);
 router.post('/courses/:id/edit', postEditCourse);
 router.post('/courses/:id/delete', deleteCourse);
 router.get('/courses/:id/classlist', classListPage);
+router.post('/bookings/:bookingId/cancel', cancelBooking);
 router.get('/users', usersPage);
 router.post('/users/:id/delete', deleteUser);
 router.get('/users/add-organiser', addOrganiserPage);

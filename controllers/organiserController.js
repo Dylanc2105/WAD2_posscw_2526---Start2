@@ -72,7 +72,7 @@ export const classListPage = async (req, res, next) => {
     const enrichedBookings = await Promise.all(
       bookings.map(async (booking) => {
         const user = await UserModel.findById(booking.userId);
-        return { ...booking, userName: user ? user.name : 'Unknown' };
+        return { ...booking, userName: user ? user.name : 'Unknown', isCancelled: booking.status === 'CANCELLED' };
       })
     );
     res.render('organiser/class_list', { title: course.title, course, bookings: enrichedBookings });
@@ -95,6 +95,17 @@ export const deleteUser = async (req, res, next) => {
   try {
     await UserModel.delete(req.params.id);
     res.redirect('/organiser/users');
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const cancelBooking = async (req, res, next) => {
+  try {
+    const booking = await BookingModel.findById(req.params.bookingId);
+    if (!booking) return res.status(404).send('Booking not found');
+    await BookingModel.cancel(req.params.bookingId);
+    res.redirect(`/organiser/courses/${booking.courseId}/classlist`);
   } catch (err) {
     next(err);
   }
