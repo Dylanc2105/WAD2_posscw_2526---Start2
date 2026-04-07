@@ -226,7 +226,7 @@ form button[type="submit"]:hover {
 }
 
 /* make sure submit buttons inside cards/forms are green not red */
-main > form button[type="submit"],
+main > form:not(.filter-bar) button[type="submit"],
 .form-submit,
 form button.btn[type="submit"] {
   background: var(--primary);
@@ -243,7 +243,7 @@ form button.btn[type="submit"]:hover {
 }
 
 /* forms */
-main > form,
+main > form:not(.filter-bar),
 .form-card {
   background: var(--white);
   border: 1px solid var(--line);
@@ -730,20 +730,26 @@ p[style*="color:red"] {
 
 /* filter bar */
 .filter-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
   flex-wrap: wrap;
   margin-bottom: 1.75rem;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+  box-shadow: none !important;
 }
 
 .filter-bar > span {
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-right: 0.25rem;
 }
 
 .filter-group {
@@ -792,10 +798,7 @@ p[style*="color:red"] {
   margin-bottom: 0.5rem;
 }
 
-.badge--beginner     { background: #f0faf4; border-color: #a3d9b8; color: #166534; }
-.badge--intermediate { background: #fffbeb; border-color: #d4b84a; color: #78570a; }
-.badge--advanced     { background: #f0faf4; border-color: #6bba8a; color: #0f4d28; }
-.badge--dropin       { background: #f5f5f0; border-color: var(--line); color: var(--muted); }
+.badge--dropin { background: #f5f5f0; border-color: var(--line); color: var(--muted); }
 
 /* card meta row */
 .card-meta {
