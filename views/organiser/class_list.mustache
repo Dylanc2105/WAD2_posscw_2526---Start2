@@ -1,0 +1,30 @@
+{{> head}}
+{{> header}}
+<main>
+  <h1>{{course.title}} — Class List</h1>
+  <p><a href="/organiser">Back to Dashboard</a></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Booked At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#bookings}}
+      <tr>
+        <td>{{userName}}</td>
+        <td>{{type}}</td>
+        <td>{{status}}</td>
+        <td>{{createdAt}}</td>
+      </tr>
+      {{/bookings}}
+      {{^bookings}}
+      <tr><td colspan="4">No bookings yet.</td></tr>
+      {{/bookings}}
+    </tbody>
+  </table>
+</main>
+{{> footer}}

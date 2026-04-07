@@ -75,6 +75,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import authRoutes from "./routes/auth.js";
+import organiserRoutes from "./routes/organiser.js";
 import courseRoutes from "./routes/courses.js";
 import sessionRoutes from "./routes/sessions.js";
 import bookingRoutes from "./routes/bookings.js";
@@ -120,6 +121,9 @@ app.use("/api/bookings", bookingRoutes);
 
 // Auth routes
 app.use("/", authRoutes);
+
+// Organiser routes
+app.use("/organiser", organiserRoutes);
 
 // SSR view routes
 app.use("/", viewRoutes);

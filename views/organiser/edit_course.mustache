@@ -1,0 +1,38 @@
+{{> head}}
+{{> header}}
+<main>
+  <h1>Edit Course</h1>
+  <form method="POST" action="/organiser/courses/{{course._id}}/edit">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" value="{{course.title}}" required />
+
+    <label for="description">Description</label>
+    <textarea id="description" name="description">{{course.description}}</textarea>
+
+    <label for="level">Level</label>
+    <select id="level" name="level">
+      <option value="beginner" {{#course.isLevelBeginner}}selected{{/course.isLevelBeginner}}>Beginner</option>
+      <option value="intermediate" {{#course.isLevelIntermediate}}selected{{/course.isLevelIntermediate}}>Intermediate</option>
+      <option value="advanced" {{#course.isLevelAdvanced}}selected{{/course.isLevelAdvanced}}>Advanced</option>
+    </select>
+
+    <label for="type">Type</label>
+    <select id="type" name="type">
+      <option value="WEEKLY_BLOCK" {{#course.isTypeWeekly}}selected{{/course.isTypeWeekly}}>Weekly Block</option>
+      <option value="WEEKEND_WORKSHOP" {{#course.isTypeWeekend}}selected{{/course.isTypeWeekend}}>Weekend Workshop</option>
+    </select>
+
+    <label>
+      <input type="checkbox" name="allowDropIn" value="true" {{#course.isAllowDropIn}}checked{{/course.isAllowDropIn}} /> Allow Drop-in
+    </label>
+
+    <label for="startDate">Start Date</label>
+    <input type="date" id="startDate" name="startDate" value="{{course.startDate}}" />
+
+    <label for="endDate">End Date</label>
+    <input type="date" id="endDate" name="endDate" value="{{course.endDate}}" />
+
+    <button type="submit">Save Changes</button>
+  </form>
+</main>
+{{> footer}}
