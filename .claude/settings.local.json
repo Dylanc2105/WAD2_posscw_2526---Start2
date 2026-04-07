@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(ls c:/Users/dylan/source/WAD2_posscw_2526---Start2/*.js)",
-      "Bash(ls c:/Users/dylan/source/WAD2_posscw_2526---Start2/src/*.js)"
+      "Bash(ls c:/Users/dylan/source/WAD2_posscw_2526---Start2/src/*.js)",
+      "Bash(cat c:/Users/dylan/source/WAD2_posscw_2526---Start2/seed/*.js)",
+      "Bash(node -e ':*)"
     ]
   }
 }

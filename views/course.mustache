@@ -40,38 +40,42 @@
   </div>
 
   {{! sessions list }}
-  <h2 style="margin-bottom:1rem">Sessions</h2>
+  <h2 style="margin-bottom:1rem">Session Schedule</h2>
   <div class="table-wrap shrink">
   <table>
     <thead>
       <tr>
         <th>Date &amp; time</th>
-        <th>Spaces</th>
-        {{#course.allowDropIn}}<th>Drop-in</th>{{/course.allowDropIn}}
+        <th>Capacity</th>
+        <th>Booked</th>
+        <th>Remaining</th>
+        {{#course.allowDropIn}}<th>Drop into session</th>{{/course.allowDropIn}}
       </tr>
     </thead>
     <tbody>
       {{#sessions}}
       <tr>
         <td>{{start}}</td>
+        <td>{{capacity}}</td>
+        <td>{{booked}}</td>
         <td>
           {{#isFull}}<span class="badge" style="color:#a03030;border-color:#fecaca;background:#fff5f5">Full</span>{{/isFull}}
-          {{^isFull}}<strong>{{remaining}}</strong> <span class="muted">/ {{capacity}}</span>{{/isFull}}
+          {{^isFull}}<strong>{{remaining}}</strong>{{/isFull}}
         </td>
-        {{#../course.allowDropIn}}
+        {{#allowDropIn}}
         <td>
           {{#user}}
           <form action="/sessions/{{id}}/book" method="post" style="margin:0;background:none;border:none;padding:0;box-shadow:none;border-radius:0;">
-            <button class="btn" type="submit"{{#isFull}} disabled style="opacity:0.45;cursor:not-allowed"{{/isFull}}>{{#isFull}}Full{{/isFull}}{{^isFull}}Book{{/isFull}}</button>
+            <button class="btn" type="submit"{{#isFull}} disabled style="opacity:0.45;cursor:not-allowed"{{/isFull}}>{{#isFull}}Full{{/isFull}}{{^isFull}}Book drop-in{{/isFull}}</button>
           </form>
           {{/user}}
-          {{^user}}<a href="/login" class="muted" style="font-size:0.875rem">Log in</a>{{/user}}
+          {{^user}}<a href="/login" class="muted" style="font-size:0.875rem">Log in to book</a>{{/user}}
         </td>
-        {{/../course.allowDropIn}}
+        {{/allowDropIn}}
       </tr>
       {{/sessions}}
       {{^sessions}}
-      <tr><td colspan="3" class="muted">No sessions scheduled yet.</td></tr>
+      <tr><td colspan="5" class="muted">No sessions scheduled yet.</td></tr>
       {{/sessions}}
     </tbody>
   </table>

@@ -18,5 +18,11 @@ export const BookingModel = {
   },
   async findByCourse(courseId) {
     return bookingsDb.find({ courseId });
-  }
+  },
+  async findActiveCourseBooking(userId, courseId) {
+    return bookingsDb.findOne({ userId, courseId, type: "COURSE", status: { $ne: "CANCELLED" } });
+  },
+  async findActiveSessionBooking(userId, sessionId) {
+    return bookingsDb.findOne({ userId, type: "SESSION", sessionIds: sessionId, status: { $ne: "CANCELLED" } });
+  },
 };

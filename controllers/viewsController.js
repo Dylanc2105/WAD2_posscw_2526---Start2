@@ -59,6 +59,7 @@ export const courseDetailPage = async (req, res, next) => {
         .render("error", { title: "Not found", message: "Course not found" });
 
     const sessions = await SessionModel.listByCourse(courseId);
+    const allowDropIn = !!course.allowDropIn;
     const rows = sessions.map((s) => {
       const remaining = Math.max(0, (s.capacity ?? 0) - (s.bookedCount ?? 0));
       return {
@@ -69,6 +70,7 @@ export const courseDetailPage = async (req, res, next) => {
         booked: s.bookedCount ?? 0,
         remaining,
         isFull: remaining === 0,
+        allowDropIn,
       };
     });
 
