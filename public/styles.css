@@ -670,6 +670,99 @@ p[style*="color:red"] {
 }
 .confirm-btn-ok:hover { background: #7e2323; }
 
+/* booked notice in booking card */
+.booked-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-sm);
+  margin-top: 0.25rem;
+}
+
+.booked-notice.confirmed {
+  background: #f0faf4;
+  border: 1px solid #a3d9b8;
+}
+
+.booked-notice.waitlisted {
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+}
+
+.booked-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+}
+
+.booked-notice.confirmed .booked-icon { color: #166534; }
+.booked-notice.waitlisted .booked-icon { color: #92400e; }
+
+.booked-notice strong {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.1rem;
+}
+
+.booked-notice p {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* session booked badge in table */
+.session-booked-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #f0faf4;
+  border: 1px solid #a3d9b8;
+  color: #166534;
+  border-radius: 20px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* error page */
+.error-page {
+  max-width: 480px;
+  margin: 4rem auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.error-icon {
+  font-size: 3rem;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.error-page h1 {
+  font-size: 2rem;
+  margin-bottom: 0;
+}
+
+.error-message {
+  background: #fff5f5;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.25rem;
+  color: #991b1b;
+  font-size: 0.9rem;
+  font-weight: 500;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 0.5rem;
+}
+
 /* mobile */
 @media (max-width: 680px) {
   h1 { font-size: 1.75rem; }

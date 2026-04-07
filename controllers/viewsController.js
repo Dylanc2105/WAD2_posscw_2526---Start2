@@ -60,8 +60,27 @@ export const courseDetailPage = async (req, res, next) => {
 
     const sessions = await SessionModel.listByCourse(courseId);
     const allowDropIn = !!course.allowDropIn;
+
+    const userId = req.user?._id ?? null;
+    const courseBooking = userId
+      ? await BookingModel.findActiveCourseBooking(userId, courseId)
+      : null;
+    const bookedCourseStatus = courseBooking?.status ?? null;
+
+    // Collect session IDs the user has already booked individually
+    let bookedSessionIds = new Set();
+    if (userId) {
+      const userBookings = await BookingModel.listByUser(userId);
+      for (const b of userBookings) {
+        if (b.status !== "CANCELLED" && b.type === "SESSION") {
+          for (const sid of b.sessionIds ?? []) bookedSessionIds.add(sid);
+        }
+      }
+    }
+
     const rows = sessions.map((s) => {
       const remaining = Math.max(0, (s.capacity ?? 0) - (s.bookedCount ?? 0));
+      const alreadyBooked = bookedSessionIds.has(s._id) || !!courseBooking;
       return {
         id: s._id,
         start: fmtDate(s.startDateTime),
@@ -71,6 +90,7 @@ export const courseDetailPage = async (req, res, next) => {
         remaining,
         isFull: remaining === 0,
         allowDropIn,
+        alreadyBooked,
       };
     });
 
@@ -89,6 +109,9 @@ export const courseDetailPage = async (req, res, next) => {
         endDate: course.endDate ? fmtDateOnly(course.endDate) : "",
         description: course.description,
         sessionsCount: rows.length,
+        alreadyBooked: !!courseBooking,
+        bookedStatus: bookedCourseStatus,
+        isWaitlisted: bookedCourseStatus === "WAITLISTED",
       },
       sessions: rows,
     });
