@@ -70,6 +70,8 @@ export const coursesListPage = async (req, res, next) => {
           title: c.title,
           level: c.level,
           type: c.type,
+          isWeekly:  c.type === 'WEEKLY_BLOCK',
+          isWeekend: c.type === 'WEEKEND_WORKSHOP',
           allowDropIn: c.allowDropIn,
           startDate: fmtDateOnly(c.startDate),
           endDate: fmtDateOnly(c.endDate),
@@ -93,7 +95,15 @@ export const coursesListPage = async (req, res, next) => {
 
     res.render("courses", {
       title: "Courses",
-      filters: { level, type, dropin, q },
+      filters: {
+        level, type, dropin, q,
+        isLevelBeginner:     level === 'beginner',
+        isLevelIntermediate: level === 'intermediate',
+        isLevelAdvanced:     level === 'advanced',
+        isTypeWeekly:        type === 'WEEKLY_BLOCK',
+        isTypeWeekend:       type === 'WEEKEND_WORKSHOP',
+        hasActive:           !!(level || type || dropin || q),
+      },
       courses: cards,
       pagination,
     });

@@ -1,22 +1,75 @@
 {{> head}}
 {{> header}}
 <main>
-<h1 style="text-align:center">Courses</h1>
+  <h1>Courses</h1>
 
-<div class="cards">
-  {{#courses}}
-  <article class="card">
-    <h2><a href="/courses/{{id}}">{{title}}</a></h2>
-    <p class="muted">Level: {{level}} • Type: {{type}} {{#allowDropIn}}• Drop-in OK{{/allowDropIn}}</p>
-    <p>{{description}}</p>
-    <p class="muted">Dates: {{startDate}} – {{endDate}}</p>
-    <p class="muted">Next session: {{nextSession}} • Sessions: {{sessionsCount}}</p>
-    <a class="btn" href="/courses/{{id}}">View &amp; Book</a>
-  </article>
-  {{/courses}}
-  {{^courses}}
-    <p>No courses available yet.</p>
-  {{/courses}}
-</div>
+  <form class="filter-bar" method="GET" action="/courses">
+    <div class="filter-group">
+      <label for="level-filter">Level</label>
+      <select id="level-filter" name="level" onchange="this.form.submit()">
+        <option value="">All levels</option>
+        <option value="beginner"     {{#filters.isLevelBeginner}}selected{{/filters.isLevelBeginner}}>Beginner</option>
+        <option value="intermediate" {{#filters.isLevelIntermediate}}selected{{/filters.isLevelIntermediate}}>Intermediate</option>
+        <option value="advanced"     {{#filters.isLevelAdvanced}}selected{{/filters.isLevelAdvanced}}>Advanced</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="type-filter">Format</label>
+      <select id="type-filter" name="type" onchange="this.form.submit()">
+        <option value="">All formats</option>
+        <option value="WEEKLY_BLOCK"    {{#filters.isTypeWeekly}}selected{{/filters.isTypeWeekly}}>Weekly Block</option>
+        <option value="WEEKEND_WORKSHOP" {{#filters.isTypeWeekend}}selected{{/filters.isTypeWeekend}}>Weekend Workshop</option>
+      </select>
+    </div>
+    {{#filters.hasActive}}
+    <a class="filter-clear" href="/courses">Clear filters</a>
+    {{/filters.hasActive}}
+  </form>
+
+  <div class="cards">
+    {{#courses}}
+    <article class="card">
+      <div class="card-badges">
+        <span class="badge badge--{{level}}">{{level}}</span>
+        {{#isWeekly}}<span class="badge">Weekly Block</span>{{/isWeekly}}
+        {{#isWeekend}}<span class="badge">Weekend Workshop</span>{{/isWeekend}}
+        {{#allowDropIn}}<span class="badge badge--dropin">Drop-in OK</span>{{/allowDropIn}}
+      </div>
+      <h2><a href="/courses/{{id}}">{{title}}</a></h2>
+      <p class="muted">{{description}}</p>
+      <div class="card-meta">
+        <span>{{startDate}} – {{endDate}}</span>
+        <span>{{sessionsCount}} sessions</span>
+      </div>
+      <a class="btn" href="/courses/{{id}}">View &amp; Book</a>
+    </article>
+    {{/courses}}
+    {{^courses}}
+      <p class="muted">No courses match the selected filters.</p>
+    {{/courses}}
+  </div>
+
+  {{#pagination.totalPages}}
+  {{#pagination.hasPrev}}{{/pagination.hasPrev}}
+  {{#pagination.hasNext}}{{/pagination.hasNext}}
+  {{/pagination.totalPages}}
+
+  {{#pagination}}
+  {{#hasPrev}}
+  <div class="pagination">
+    <a href="{{prevLink}}">← Previous</a>
+    <span>Page {{page}} of {{totalPages}}</span>
+    {{#hasNext}}<a href="{{nextLink}}">Next →</a>{{/hasNext}}
+  </div>
+  {{/hasPrev}}
+  {{^hasPrev}}
+  {{#hasNext}}
+  <div class="pagination">
+    <span>Page {{page}} of {{totalPages}}</span>
+    <a href="{{nextLink}}">Next →</a>
+  </div>
+  {{/hasNext}}
+  {{/hasPrev}}
+  {{/pagination}}
 </main>
 {{> footer}}
