@@ -1,4 +1,3 @@
-// controllers/viewsController.js
 import { CourseModel } from "../models/courseModel.js";
 import { SessionModel } from "../models/sessionModel.js";
 import {
@@ -25,9 +24,9 @@ const fmtDateOnly = (iso) =>
 
 export const homePage = async (req, res, next) => {
   try {
-    const courses = await CourseModel.list();
+    const allCourses = await CourseModel.list();
     const cards = await Promise.all(
-      courses.map(async (c) => {
+      allCourses.slice(0, 3).map(async (c) => {
         const sessions = await SessionModel.listByCourse(c._id);
         const nextSession = sessions[0];
         return {
@@ -60,26 +59,34 @@ export const courseDetailPage = async (req, res, next) => {
         .render("error", { title: "Not found", message: "Course not found" });
 
     const sessions = await SessionModel.listByCourse(courseId);
-    const rows = sessions.map((s) => ({
-      id: s._id,
-      start: fmtDate(s.startDateTime),
-      end: fmtDate(s.endDateTime),
-      capacity: s.capacity,
-      booked: s.bookedCount ?? 0,
-      remaining: Math.max(0, (s.capacity ?? 0) - (s.bookedCount ?? 0)),
-    }));
+    const rows = sessions.map((s) => {
+      const remaining = Math.max(0, (s.capacity ?? 0) - (s.bookedCount ?? 0));
+      return {
+        id: s._id,
+        start: fmtDate(s.startDateTime),
+        end: fmtDate(s.endDateTime),
+        capacity: s.capacity,
+        booked: s.bookedCount ?? 0,
+        remaining,
+        isFull: remaining === 0,
+      };
+    });
+
+    const typeLabel = { WEEKLY_BLOCK: "Weekly Block", WEEKEND_WORKSHOP: "Weekend Workshop" };
+    const levelLabel = { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" };
 
     res.render("course", {
       title: course.title,
       course: {
         id: course._id,
         title: course.title,
-        level: course.level,
-        type: course.type,
+        level: levelLabel[course.level] ?? course.level,
+        type: typeLabel[course.type] ?? course.type,
         allowDropIn: course.allowDropIn,
         startDate: course.startDate ? fmtDateOnly(course.startDate) : "",
         endDate: course.endDate ? fmtDateOnly(course.endDate) : "",
         description: course.description,
+        sessionsCount: rows.length,
       },
       sessions: rows,
     });

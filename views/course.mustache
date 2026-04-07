@@ -1,52 +1,81 @@
-
 {{> head}}
 {{> header}}
+<main>
 
-<article>
-  <h1>{{course.title}}</h1>
-  <p class="muted">
-    Level: {{course.level}} • Type: {{course.type}} {{#course.allowDropIn}}• Drop-in available{{/course.allowDropIn}}
-  </p>
-  <p>{{course.description}}</p>
-  <p class="muted">Dates: {{course.startDate}} – {{course.endDate}}</p>
+  <a class="back-link" href="/courses">← Back to courses</a>
 
-  <section>
-    <h2>Book the full course</h2>
-   <form action="/courses/{{course.id}}/book" method="post">  <!-- If you add CSRF later: <input type="hidden" name="_csrf" value="{{csrfToken}}"> -->
-      <input type="hidden" name="userId" value="{{user._id}}">
-      <button class="btn primary" type="submit">Book full course</button>
-    </form>
-  </section>
+  <div class="course-top">
 
-  <section>
-    <h2>Sessions</h2>
-    <table class="table">
-      <thead>
-        <tr><th>Start</th><th>End</th><th>Capacity</th><th>Booked</th><th>Remaining</th><th></th></tr>
-      </thead>
-      <tbody>
-        {{#sessions}}
-        <tr>
-          <td>{{start}}</td>
-          <td>{{end}}</td>
-          <td>{{capacity}}</td>
-          <td>{{booked}}</td>
-          <td>{{remaining}}</td>
-          <td>
-            {{#../course.allowDropIn}}
-            <form method="postook
-              <button class="btn" type="submit" {{#isFull}}disabled{{/isFull}}>Book this session</button>
-            </form>
-            {{/../course.allowDropIn}}
-            {{^../course.allowDropIn}}
-              <span class="muted">Drop-ins disabled</span>
-            {{/../course.allowDropIn}}
-          </td>
-        </tr>
-        {{/sessions}}
-      </tbody>
-    </table>
-  </section>
-</article>
+    {{! course info }}
+    <div>
+      <h1 style="margin-bottom:1rem">{{course.title}}</h1>
 
+      <div class="course-meta">
+        <span class="badge">{{course.level}}</span>
+        <span class="badge">{{course.type}}</span>
+        {{#course.allowDropIn}}<span class="badge" style="color:var(--primary);border-color:var(--primary)">Drop-ins welcome</span>{{/course.allowDropIn}}
+      </div>
+
+      <p class="muted" style="margin-bottom:1.25rem">{{course.startDate}} – {{course.endDate}}</p>
+      <p style="max-width:560px">{{course.description}}</p>
+    </div>
+
+    {{! booking card }}
+    <div class="booking-card">
+      <h2>Book this course</h2>
+      <div class="meta-row"><span>Sessions</span><span>{{course.sessionsCount}}</span></div>
+      <div class="meta-row"><span>Dates</span><span>{{course.startDate}} – {{course.endDate}}</span></div>
+      <div class="meta-row"><span>Drop-in</span><span>{{#course.allowDropIn}}Yes{{/course.allowDropIn}}{{^course.allowDropIn}}No{{/course.allowDropIn}}</span></div>
+
+      {{#user}}
+      <form action="/courses/{{course.id}}/book" method="post">
+        <button class="btn" type="submit">Book full course</button>
+      </form>
+      {{/user}}
+      {{^user}}
+      <a class="btn" href="/login" style="width:100%;justify-content:center">Log in to book</a>
+      {{/user}}
+    </div>
+
+  </div>
+
+  {{! sessions list }}
+  <h2 style="margin-bottom:1rem">Sessions</h2>
+  <div class="table-wrap shrink">
+  <table>
+    <thead>
+      <tr>
+        <th>Date &amp; time</th>
+        <th>Spaces</th>
+        {{#course.allowDropIn}}<th>Drop-in</th>{{/course.allowDropIn}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#sessions}}
+      <tr>
+        <td>{{start}}</td>
+        <td>
+          {{#isFull}}<span class="badge" style="color:#a03030;border-color:#fecaca;background:#fff5f5">Full</span>{{/isFull}}
+          {{^isFull}}<strong>{{remaining}}</strong> <span class="muted">/ {{capacity}}</span>{{/isFull}}
+        </td>
+        {{#../course.allowDropIn}}
+        <td>
+          {{#user}}
+          <form action="/sessions/{{id}}/book" method="post" style="margin:0;background:none;border:none;padding:0;box-shadow:none;border-radius:0;">
+            <button class="btn" type="submit"{{#isFull}} disabled style="opacity:0.45;cursor:not-allowed"{{/isFull}}>{{#isFull}}Full{{/isFull}}{{^isFull}}Book{{/isFull}}</button>
+          </form>
+          {{/user}}
+          {{^user}}<a href="/login" class="muted" style="font-size:0.875rem">Log in</a>{{/user}}
+        </td>
+        {{/../course.allowDropIn}}
+      </tr>
+      {{/sessions}}
+      {{^sessions}}
+      <tr><td colspan="3" class="muted">No sessions scheduled yet.</td></tr>
+      {{/sessions}}
+    </tbody>
+  </table>
+  </div>
+
+</main>
 {{> footer}}

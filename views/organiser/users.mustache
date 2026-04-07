@@ -1,36 +1,41 @@
 {{> head}}
 {{> header}}
 <main>
+  <a class="back-link" href="/organiser">← Back to dashboard</a>
   <h1>Manage Users</h1>
-  <p><a href="/organiser/users/add-organiser">Add Organiser</a></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#users}}
-      <tr>
-        <td>{{name}}</td>
-        <td>{{email}}</td>
-        <td>{{role}}</td>
-        <td>
-          {{^isSelf}}
-          <form method="POST" action="/organiser/users/{{_id}}/delete" style="display:inline;">
-            <button type="submit" onclick="return confirm('Delete this user?')">Delete</button>
-          </form>
-          {{/isSelf}}
-        </td>
-      </tr>
-      {{/users}}
-      {{^users}}
-      <tr><td colspan="4">No users found.</td></tr>
-      {{/users}}
-    </tbody>
-  </table>
+  <div class="page-actions">
+    <a class="btn" href="/organiser/users/add-organiser">Add Organiser</a>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#users}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{email}}</td>
+          <td>{{role}}</td>
+          <td>
+            {{^isSelf}}
+            <form method="POST" action="/organiser/users/{{_id}}/delete" data-confirm="Delete {{name}}? This cannot be undone.">
+              <button type="submit">Delete</button>
+            </form>
+            {{/isSelf}}
+          </td>
+        </tr>
+        {{/users}}
+        {{^users}}
+        <tr><td colspan="4">No users found.</td></tr>
+        {{/users}}
+      </tbody>
+    </table>
+  </div>
 </main>
 {{> footer}}

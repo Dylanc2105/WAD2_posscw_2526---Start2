@@ -2,38 +2,42 @@
 {{> header}}
 <main>
   <h1>Organiser Dashboard</h1>
-  <p>
-    <a href="/organiser/courses/add">Add New Course</a> |
+  <div class="page-actions">
+    <a href="/organiser/courses/add">+ Add New Course</a>
     <a href="/organiser/users">Manage Users</a>
-  </p>
-  <table>
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Level</th>
-        <th>Type</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#courses}}
-      <tr>
-        <td>{{title}}</td>
-        <td>{{level}}</td>
-        <td>{{type}}</td>
-        <td>
-          <a href="/organiser/courses/{{_id}}/edit">Edit</a> |
-          <a href="/organiser/courses/{{_id}}/classlist">Class List</a> |
-          <form method="POST" action="/organiser/courses/{{_id}}/delete" style="display:inline;">
-            <button type="submit" onclick="return confirm('Delete this course?')">Delete</button>
-          </form>
-        </td>
-      </tr>
-      {{/courses}}
-      {{^courses}}
-      <tr><td colspan="4">No courses yet.</td></tr>
-      {{/courses}}
-    </tbody>
-  </table>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Level</th>
+          <th>Type</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#courses}}
+        <tr>
+          <td>{{title}}</td>
+          <td>{{level}}</td>
+          <td>{{type}}</td>
+          <td>
+            <div class="row-actions">
+              <a href="/organiser/courses/{{_id}}/edit">Edit</a>
+              <a href="/organiser/courses/{{_id}}/classlist">Class List</a>
+              <form method="POST" action="/organiser/courses/{{_id}}/delete" data-confirm="Delete &ldquo;{{title}}&rdquo;? This cannot be undone.">
+                <button type="submit">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {{/courses}}
+        {{^courses}}
+        <tr><td colspan="4">No courses yet.</td></tr>
+        {{/courses}}
+      </tbody>
+    </table>
+  </div>
 </main>
 {{> footer}}

@@ -5,5 +5,69 @@
     <p>&copy; {{year}} Yoga Studio. All rights reserved.</p>
   </div>
 </footer>
+
+<!-- Confirm modal -->
+<div id="confirm-overlay" class="confirm-overlay" hidden>
+  <div class="confirm-box" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <h3 id="confirm-title">Are you sure?</h3>
+    <p id="confirm-message" class="muted"></p>
+    <div class="confirm-actions">
+      <button id="confirm-cancel" class="confirm-btn-cancel">Cancel</button>
+      <button id="confirm-ok" class="confirm-btn-ok">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const overlay  = document.getElementById('confirm-overlay');
+    const msgEl    = document.getElementById('confirm-message');
+    const cancelBtn = document.getElementById('confirm-cancel');
+    const okBtn    = document.getElementById('confirm-ok');
+    let pendingForm = null;
+
+    function openModal(message, form) {
+      msgEl.textContent = message;
+      pendingForm = form;
+      overlay.hidden = false;
+      cancelBtn.focus();
+    }
+
+    function closeModal() {
+      overlay.hidden = true;
+      pendingForm = null;
+    }
+
+    // Intercept any form with data-confirm
+    document.addEventListener('submit', function (e) {
+      const form = e.target;
+      const message = form.dataset.confirm;
+      if (!message) return;
+      e.preventDefault();
+      openModal(message, form);
+    });
+
+    cancelBtn.addEventListener('click', closeModal);
+
+    okBtn.addEventListener('click', function () {
+      if (pendingForm) {
+        pendingForm.removeAttribute('data-confirm');
+        pendingForm.submit();
+      }
+      closeModal();
+    });
+
+    // Close on overlay click
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeModal();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !overlay.hidden) closeModal();
+    });
+  })();
+</script>
+
 </body>
 </html>

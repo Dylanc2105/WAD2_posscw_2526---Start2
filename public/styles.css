@@ -1,4 +1,4 @@
-/* ─── Variables ─────────────────────────────────────────────── */
+/* variables */
 :root {
   --bg:           #fafaf8;
   --white:        #ffffff;
@@ -16,12 +16,12 @@
   --radius-sm:    8px;
 }
 
-/* ─── Reset ─────────────────────────────────────────────────── */
+/* reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body { overflow-x: hidden; }
 
-/* ─── Base ───────────────────────────────────────────────────── */
+/* base styles */
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 18px;
@@ -48,7 +48,7 @@ a:hover { text-decoration: underline; }
 p { margin-bottom: 0.75rem; }
 p:last-child { margin-bottom: 0; }
 
-/* ─── Layout ─────────────────────────────────────────────────── */
+/* layout */
 .wrap {
   max-width: 1100px;
   margin: 0 auto;
@@ -63,7 +63,7 @@ main {
   padding: 4rem 2.5rem;
 }
 
-/* ─── Header ─────────────────────────────────────────────────── */
+/* header */
 .site-header {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: saturate(180%) blur(12px);
@@ -124,7 +124,7 @@ main {
   font-weight: 600;
 }
 
-/* ─── Footer ─────────────────────────────────────────────────── */
+/* footer */
 .site-footer {
   background: var(--white);
   border-top: 1px solid var(--line);
@@ -135,12 +135,13 @@ main {
   letter-spacing: 0.01em;
 }
 
-/* ─── Cards ──────────────────────────────────────────────────── */
+/* cards */
 .cards {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 1.25rem;
   margin: 1.5rem 0;
+  justify-content: center;
 }
 
 .card {
@@ -163,7 +164,7 @@ main {
 .card h2 a:hover { color: var(--primary); text-decoration: none; }
 .card .btn { margin-top: auto; align-self: flex-start; }
 
-/* ─── Buttons ────────────────────────────────────────────────── */
+/* buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -224,9 +225,10 @@ form button[type="submit"]:hover {
   border-color: #a03030;
 }
 
-/* Override for main submit buttons */
+/* make sure submit buttons inside cards/forms are green not red */
 main > form button[type="submit"],
-.form-submit {
+.form-submit,
+form button.btn[type="submit"] {
   background: var(--primary);
   color: var(--white);
   border: none;
@@ -235,11 +237,12 @@ main > form button[type="submit"],
   font-size: 0.9rem;
   font-weight: 500;
 }
-main > form button[type="submit"]:hover {
+main > form button[type="submit"]:hover,
+form button.btn[type="submit"]:hover {
   background: var(--primary-dark);
 }
 
-/* ─── Forms ──────────────────────────────────────────────────── */
+/* forms */
 main > form,
 .form-card {
   background: var(--white);
@@ -304,19 +307,31 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
-/* ─── Tables ─────────────────────────────────────────────────── */
+/* tables */
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  margin: 1.5rem 0;
+}
+
+.table-wrap.shrink {
+  width: fit-content;
+  max-width: 100%;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
-  display: block;
-  overflow-x: auto;
-  background: var(--white);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--line);
-  margin: 1.5rem 0;
   font-size: 0.9rem;
+}
+
+.table-wrap.shrink table {
+  width: auto;
 }
 
 thead {
@@ -332,6 +347,7 @@ thead th {
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
+  white-space: nowrap;
 }
 
 tbody tr {
@@ -347,6 +363,24 @@ tbody td {
   color: var(--text);
 }
 
+/* action links in a table row */
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  white-space: nowrap;
+}
+
+.row-actions form {
+  margin: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+  border-radius: 0;
+  flex-direction: row;
+}
+
 /* Inline form in table cells */
 tbody td form {
   margin: 0;
@@ -360,7 +394,7 @@ tbody td form {
   gap: 0;
 }
 
-/* ─── Utility ────────────────────────────────────────────────── */
+/* utility */
 .muted {
   color: var(--muted);
   font-size: 0.875rem;
@@ -383,7 +417,7 @@ p[style*="color:red"] {
   font-weight: 500;
 }
 
-/* ─── Page-level spacing helpers ─────────────────────────────── */
+/* page spacing helpers */
 .page-actions {
   display: flex;
   gap: 0.75rem;
@@ -402,7 +436,241 @@ p[style*="color:red"] {
 }
 .back-link:hover { color: var(--text); text-decoration: none; }
 
-/* ─── Mobile ─────────────────────────────────────────────────── */
+/* course detail page */
+.course-top {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 3rem;
+}
+
+.course-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.booking-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 90px;
+}
+
+.booking-card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.booking-card .meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--muted);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.booking-card .meta-row:last-of-type { border-bottom: none; margin-bottom: 1.25rem; }
+
+.booking-card form {
+  margin: 0; background: none; border: none;
+  padding: 0; box-shadow: none; border-radius: 0;
+}
+
+.booking-card .btn { width: 100%; justify-content: center; }
+
+@media (max-width: 780px) {
+  .course-top { grid-template-columns: 1fr; }
+  .booking-card { position: static; }
+  .table-wrap.shrink { width: 100%; }
+}
+
+/* hero section */
+.hero-wrap {
+  max-width: 1100px;
+  margin: 2.5rem auto 0;
+  padding: 0 4rem;
+}
+
+.hero {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, #3d6b4f 100%);
+  color: var(--white);
+  padding: 5rem 3.5rem 4.5rem;
+  text-align: center;
+  border-radius: var(--radius);
+}
+
+.hero h1 {
+  color: var(--white);
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.hero p {
+  color: rgba(255,255,255,0.78);
+  font-size: 1.15rem;
+  max-width: 520px;
+  margin: 0 auto 2.25rem;
+}
+
+.hero .btn-hero {
+  background: var(--white);
+  color: var(--primary-dark);
+  font-weight: 600;
+  padding: 0.85rem 2rem;
+  font-size: 1rem;
+  border-radius: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: transform 0.15s, box-shadow 0.15s;
+  text-decoration: none;
+}
+.hero .btn-hero:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  text-decoration: none;
+  color: var(--primary-dark);
+}
+
+/* homepage course strip */
+.course-strip-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3.5rem 2.5rem 4rem;
+}
+
+.course-strip-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.course-strip-header h2 {
+  margin-bottom: 0;
+}
+
+.course-strip-header a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.course-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.course-strip .card {
+  gap: 0.4rem;
+}
+
+.course-strip .card h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.1rem;
+}
+
+.course-strip .card h3 a { color: var(--text); }
+.course-strip .card h3 a:hover { color: var(--primary); text-decoration: none; }
+
+.course-strip .card .btn {
+  margin-top: auto;
+  align-self: flex-start;
+  font-size: 0.875rem;
+  padding: 0.5rem 1.1rem;
+}
+
+/* confirm modal */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.confirm-overlay[hidden] { display: none; }
+
+.confirm-box {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 2rem 2.25rem;
+  max-width: 380px;
+  width: calc(100% - 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.confirm-box h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+
+.confirm-btn-cancel {
+  padding: 0.55rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.confirm-btn-cancel:hover { background: var(--surface); }
+
+.confirm-btn-ok {
+  padding: 0.55rem 1.25rem;
+  border: none;
+  border-radius: 20px;
+  background: #a03030;
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.confirm-btn-ok:hover { background: #7e2323; }
+
+/* mobile */
 @media (max-width: 680px) {
   h1 { font-size: 1.75rem; }
 
@@ -417,4 +685,11 @@ p[style*="color:red"] {
 
   table { font-size: 0.8rem; }
   thead th, tbody td { padding: 0.6rem 0.75rem; }
+
+  .hero-wrap { padding: 0 1.25rem; margin-top: 1.5rem; }
+  .hero { padding: 3rem 1.5rem 2.5rem; }
+  .hero h1 { font-size: 2.1rem; }
+
+  .course-strip-section { padding: 2rem 1rem 2.5rem; }
+  .course-strip { grid-template-columns: 1fr; }
 }

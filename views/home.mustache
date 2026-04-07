@@ -1,25 +1,34 @@
 {{> head}}
 {{> header}}
-<main>
-<h1>Upcoming Courses</h1>
 
-<div class="cards">
-  {{#courses}}
-  <article class="card">
-    <h2><a href="/courses/{{id}}">{{title}}</a></h2>
-    <p class="muted">
-      Level: {{level}} • Type: {{type}} {{#allowDropIn}}• Drop-in OK{{/allowDropIn}}
-    </p>
-    <p>{{description}}</p>
-    <p class="muted">Dates: {{startDate}} – {{endDate}}</p>
-    <p class="muted">Next session: {{nextSession}} • Sessions: {{sessionsCount}}</p>
-    <a class="btn" href="/courses/{{id}}">View &amp; Book</a>
-  </article>
-  {{/courses}}
-
-  {{^courses}}
-    <p>No courses available yet.</p>
-  {{/courses}}
+<div class="hero-wrap">
+<section class="hero">
+  <h1>Find your flow</h1>
+  <p>Yoga classes for every level — from first-timers to seasoned practitioners. Book a full course or drop in to a single session.</p>
+  <a class="btn-hero" href="/courses">Browse all courses →</a>
+</section>
 </div>
-</main>
+
+<div class="course-strip-section">
+  <div class="course-strip-header">
+    <h2>Upcoming courses</h2>
+    <a href="/courses">View all →</a>
+  </div>
+
+  <div class="course-strip">
+    {{#courses}}
+    <article class="card">
+      <h3><a href="/courses/{{id}}">{{title}}</a></h3>
+      <p class="muted" style="font-size:0.8rem">{{level}} · {{type}}</p>
+      <p class="muted" style="font-size:0.8rem">{{startDate}} – {{endDate}}</p>
+      <p style="font-size:0.875rem;flex:1">{{description}}</p>
+      <a class="btn" href="/courses/{{id}}">View &amp; Book</a>
+    </article>
+    {{/courses}}
+    {{^courses}}
+    <p class="muted">No courses available yet.</p>
+    {{/courses}}
+  </div>
+</div>
+
 {{> footer}}

@@ -1,9 +1,8 @@
-
 {{> head}}
 {{> header}}
-
-<h1>Booking Confirmation</h1>
-<p>Your booking has been created.</p>
+<main>
+<h1>Booking Confirmed</h1>
+<p>Your booking has been created successfully.</p>
 
 <dl class="kv">
   <dt>ID</dt><dd>{{booking.id}}</dd>
@@ -12,6 +11,8 @@
   <dt>Created</dt><dd>{{booking.createdAt}}</dd>
 </dl>
 
-<p><a class="btn" href></p>
-
-{{>
+<div class="page-actions" style="margin-top:2rem">
+  <a class="btn" href="/courses">Browse more courses</a>
+</div>
+</main>
+{{> footer}}
